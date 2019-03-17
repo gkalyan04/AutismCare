@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Autism</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDtpqE2Ne-htEyMBxObFj_H0Y6XsF9LInk",
+    authDomain: "gauri-ab979.firebaseapp.com",
+    databaseURL: "https://gauri-ab979.firebaseio.com",
+    projectId: "gauri-ab979",
+    storageBucket: "gauri-ab979.appspot.com",
+    messagingSenderId: "769032401169"
+  };
+  firebase.initializeApp(config);
+</script>
+</script>
+<style>
+body{
+  background: #4CB8C4;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #3CD3AD, #4CB8C4);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #3CD3AD, #4CB8C4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+font-family: 'Black Han Sans', sans-serif;
+}
+/* For desktop: */
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+.content {
+  max-width: 500px;
+  margin: auto;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  [class*="col-"] {
+    width: 100%;
+  }
+}
+
+
+
+</style>
+</head>
+<body>
+              <div id="filesubmit" class="content">
+                <h1 style="margin-left: 12%;margin-top:17%;color: white;font-size: 50px"><u>Autism Care</u></h1>
+                <input placeholder="video" type="file" style="font-size:20px;margin-top:25%;margin-left: 15%" class="file-select"
+                  accept="video/*" />
+                <button type="button" class="file-submit btn btn-primary" style="font-size:40px;margin-top:20%;margin-left:30%;">Predict</button>
+                <h2 id="result" class='borderBlink' style="margin-left: 33%;margin-top:10%;color:black;border:1"></h2>
+                
+              </div>
+                       
+                        
+
+<script>
+        const storageService = firebase.storage();
+          const storageRef = storageService.ref();
+          document.querySelector('.file-select').addEventListener('change', handleFileUploadChange);
+          document.querySelector('.file-submit').addEventListener('click', handleFileUploadSubmit);
+          let selectedFile;
+          function handleFileUploadChange(e) {
+            selectedFile = e.target.files[0];
+          }
+          function handleFileUploadSubmit(e) {
+            const uploadTask = storageRef.child(`images/${selectedFile.name}`).put(selectedFile);
+            //create a child directory called images, and place the file inside this directory
+            uploadTask.on('state_changed', (snapshot) => {
+              // Observe state change events such as progress, pause, and resume
+            }, (error) => {
+              // Handle unsuccessful uploads
+              console.log(error);
+            }, () => {
+              // Do something once upload is complete
+              console.log('success');
+            });
+          }
+
+          var ref = firebase.database().ref();
+
+          ref.on("value", function (snapshot) {
+            let snap = snapshot.val();
+
+            console.log(snap['result']);
+            document.getElementById("result").innerHTML = snap['result'];
+          }, function (error) {
+            console.log("Error: " + error.code);
+          });
+        
+</script>
+</body>
+</html>
